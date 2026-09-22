@@ -11,6 +11,9 @@ class CatalogApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 246, 247, 232),
+      ),
       title: 'Neurogine - Catalog App',
       routerConfig: AppRouter.router,
     );
