@@ -22,7 +22,7 @@ class AppRouter {
         builder: (context, state) => BlocProvider(
           create: (_) => CatalogListingController(
             catalogListingRepositories: CatalogListingRepositories(),
-          )..loadCatalog(),
+          )..loadInitialCatalog(),
           child: const CatalogScreen(),
         ),
       ),

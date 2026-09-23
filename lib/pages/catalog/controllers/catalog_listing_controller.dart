@@ -10,8 +10,9 @@ class CatalogListingController extends Cubit<CatalogListingState> {
   final CatalogListingRepositories catalogListingRepositories;
 
   int _skip = 0;
+  CatalogListingSuccess? _loadedListing;
 
-  Future<void> loadCatalog() async {
+  Future<void> loadInitialCatalog() async {
     emit(const CatalogListingLoading());
     _skip = 0;
     try {
@@ -20,7 +21,7 @@ class CatalogListingController extends Cubit<CatalogListingState> {
       );
       final products = _productsFrom(data);
       _skip = products.length;
-      emit(
+      _showLoadedListing(
         CatalogListingSuccess(
           products: products,
           hasMore: _hasMore(data, products.length),
@@ -51,15 +52,42 @@ class CatalogListingController extends Cubit<CatalogListingState> {
       final nextProducts = _productsFrom(data);
       final products = [...current.products, ...nextProducts];
       _skip = products.length;
-      emit(
+      _showLoadedListing(
         CatalogListingSuccess(
           products: products,
           hasMore: nextProducts.isNotEmpty && _hasMore(data, products.length),
         ),
       );
     } catch (error) {
-      emit(CatalogListingSuccess(products: current.products, hasMore: true));
+      _showLoadedListing(
+        CatalogListingSuccess(products: current.products, hasMore: true),
+      );
     }
+  }
+
+  Future<void> searchProduct(String keyword) async {
+    if (keyword.trim().isEmpty) {
+      final listing = _loadedListing;
+      if (listing != null) emit(listing);
+      return;
+    }
+
+    emit(const CatalogListingLoading());
+    try {
+      final data = await catalogListingRepositories.getCatalogSearchListing(
+        keyword: keyword,
+      );
+      emit(
+        CatalogListingSuccess(products: _productsFrom(data), hasMore: false),
+      );
+    } catch (error) {
+      emit(CatalogListingError(error.toString()));
+    }
+  }
+
+  void _showLoadedListing(CatalogListingSuccess listing) {
+    _loadedListing = listing;
+    emit(listing);
   }
 
   List<CatalogListingModel> _productsFrom(dynamic data) {
