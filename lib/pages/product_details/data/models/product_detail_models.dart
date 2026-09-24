@@ -24,15 +24,20 @@ class ProductDetailModel {
       id: json['id'] ?? 0,
       title: json['title'] ?? "",
       description: json['description'] ?? "",
-      images: (json['images'] as List<dynamic>? ?? [])
-          .map((image) => image as String)
-          .toList(),
+      images:
+          (json['images'] as List<dynamic>? ?? []) // AI Assistance
+              .map((image) => image as String)
+              .toList(),
       price: (json['price']).toDouble() ?? 0.0,
       discountPercentage: (json['discountPercentage']).toDouble() ?? 0.0,
       rating: (json['rating']).toDouble() ?? 0.0,
-      reviews: (json['reviews'] as List<dynamic>? ?? [])
-          .map((review) => ReviewModel.fromJson(review as Map<String, dynamic>))
-          .toList(),
+      reviews:
+          (json['reviews'] as List<dynamic>? ?? []) // AI Assistance
+              .map(
+                (review) =>
+                    ReviewModel.fromJson(review as Map<String, dynamic>),
+              )
+              .toList(),
     );
   }
 }

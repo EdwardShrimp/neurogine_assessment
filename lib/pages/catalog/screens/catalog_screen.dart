@@ -78,7 +78,7 @@ class _CatalogList extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: ListView.separated(
           itemCount: products.length + (isLoadingMore ? 1 : 0),
-          separatorBuilder: (_, __) => const Divider(height: 1),
+          separatorBuilder: (context, index) => const Divider(height: 1),
           itemBuilder: (context, index) {
             if (index >= products.length) {
               return const Padding(
@@ -182,7 +182,8 @@ class _CatalogItem extends StatelessWidget {
         width: 56,
         height: 56,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported),
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.image_not_supported),
       ),
 
       ///
