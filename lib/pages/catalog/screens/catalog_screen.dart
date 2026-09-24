@@ -128,6 +128,15 @@ class _CatalogSearchFieldState extends State<_CatalogSearchField> {
             decoration: InputDecoration(
               hintText: 'Search...',
               prefixIcon: const Icon(Icons.search),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  _keywordController.clear();
+                  context.read<CatalogListingController>().searchProduct(
+                    _keywordController.text,
+                  );
+                },
+                icon: Icon(Icons.close),
+              ),
               filled: true,
               fillColor: Colors.white,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
