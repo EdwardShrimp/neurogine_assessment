@@ -194,8 +194,35 @@ class _CatalogItem extends StatelessWidget {
       ///
       /// Product Price and Rating
       ///
-      subtitle: Text(
-        'RM${product.price.toStringAsFixed(2)}  · ★${product.rating.toStringAsFixed(1)}',
+      subtitle: Row(
+        children: [
+          Text('RM${product.price.toStringAsFixed(2)}'),
+          const SizedBox(width: 8),
+          product.discountPercentage > 0
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width: 50,
+                  height: 20,
+                  child: Center(
+                    child: Text(
+                      "-${product.discountPercentage.toString()}%",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox.shrink(),
+          const SizedBox(width: 8),
+          Text('·'),
+          const SizedBox(width: 8),
+          Text('★${product.rating.toStringAsFixed(1)}'),
+        ],
       ),
     );
   }
