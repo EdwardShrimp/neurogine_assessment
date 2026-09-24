@@ -21,6 +21,7 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
+  carousel_slider: ^5.1.2
   dio: ^5.11.1
   flutter_bloc: ^9.1.1
   go_router: ^17.0.0
