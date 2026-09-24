@@ -74,39 +74,29 @@ class _CatalogList extends StatelessWidget {
         }
         return false;
       },
-      child: ListView.separated(
-        itemCount: products.length + (isLoadingMore ? 1 : 0),
-        separatorBuilder: (_, __) => const Divider(height: 1),
-        itemBuilder: (context, index) {
-          if (index >= products.length) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ListView.separated(
+          itemCount: products.length + (isLoadingMore ? 1 : 0),
+          separatorBuilder: (_, __) => const Divider(height: 1),
+          itemBuilder: (context, index) {
+            if (index >= products.length) {
+              return const Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
 
-          final product = products[index];
-          return GestureDetector(
-            onTap: () => context.pushNamed(
-              RouteNames.productDetails,
-              pathParameters: {'id': product.id.toString()},
-            ),
-            child: ListTile(
-              leading: Image.network(
-                product.thumbnailUrl,
-                width: 56,
-                height: 56,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    const Icon(Icons.image_not_supported),
+            final product = products[index];
+            return GestureDetector(
+              onTap: () => context.pushNamed(
+                RouteNames.productDetails,
+                pathParameters: {'id': product.id.toString()},
               ),
-              title: Text(product.title),
-              subtitle: Text(
-                'RM${product.price.toStringAsFixed(2)}  · ★${product.rating.toStringAsFixed(1)}',
-              ),
-            ),
-          );
-        },
+              child: _CatalogItem(product: product),
+            );
+          },
+        ),
       ),
     );
   }
@@ -163,6 +153,40 @@ class _CatalogSearchFieldState extends State<_CatalogSearchField> {
           child: const Text('Search'),
         ),
       ],
+    );
+  }
+}
+
+class _CatalogItem extends StatelessWidget {
+  const _CatalogItem({required this.product});
+
+  final CatalogListingModel product;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      ///
+      /// Product Thumbnail
+      ///
+      leading: Image.network(
+        product.thumbnailUrl,
+        width: 56,
+        height: 56,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported),
+      ),
+
+      ///
+      /// Product Title
+      ///
+      title: Text(product.title),
+
+      ///
+      /// Product Price and Rating
+      ///
+      subtitle: Text(
+        'RM${product.price.toStringAsFixed(2)}  · ★${product.rating.toStringAsFixed(1)}',
+      ),
     );
   }
 }
