@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:neurogine_assessment/app/router/route_names.dart';
 import 'package:neurogine_assessment/pages/catalog/controllers/catalog_listing_controller.dart';
 import 'package:neurogine_assessment/pages/catalog/controllers/catalog_listing_state.dart';
 import 'package:neurogine_assessment/pages/catalog/data/models/catalog_listing_models.dart';
@@ -84,18 +86,24 @@ class _CatalogList extends StatelessWidget {
           }
 
           final product = products[index];
-          return ListTile(
-            leading: Image.network(
-              product.thumbnailUrl,
-              width: 56,
-              height: 56,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.image_not_supported),
+          return GestureDetector(
+            onTap: () => context.pushNamed(
+              RouteNames.productDetails,
+              pathParameters: {'id': product.id.toString()},
             ),
-            title: Text(product.title),
-            subtitle: Text(
-              'RM${product.price.toStringAsFixed(2)}  · ★${product.rating.toStringAsFixed(1)}',
+            child: ListTile(
+              leading: Image.network(
+                product.thumbnailUrl,
+                width: 56,
+                height: 56,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.image_not_supported),
+              ),
+              title: Text(product.title),
+              subtitle: Text(
+                'RM${product.price.toStringAsFixed(2)}  · ★${product.rating.toStringAsFixed(1)}',
+              ),
             ),
           );
         },
